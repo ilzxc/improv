@@ -1,0 +1,21 @@
+{
+  "name": "Improv",
+  "version": "1.0.0",
+  "description": "Animated Graphical Score for Music 210",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ilya Rostovtsev",
+  "license": "BSD-2-Clause",
+  "dependencies": {},
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ilzxc/improv.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ilzxc/improv/issues"
+  },
+  "homepage": "https://ilzxc.github.io/improv"
+}
