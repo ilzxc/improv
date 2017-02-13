@@ -20,7 +20,6 @@ Envelope = () ->
 
     @update = (currentTime) ->
         t = (currentTime - @startTime) / @duration
-        console.log 't', t
         if t < 1
             @currentValue = Math.pow t, @exponent
         else
