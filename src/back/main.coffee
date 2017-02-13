@@ -1,4 +1,4 @@
-{ app, Menu, BrowserWindow, ipcMain, dialog } = require 'electron'
+{ app, BrowserWindow } = require 'electron'
 mainWindow = null;
 
 app.on 'ready', () ->
