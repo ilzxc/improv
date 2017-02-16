@@ -1,5 +1,5 @@
 ipc = require('electron').ipcRenderer
-{ Envelope } = require './build/front/envelope'
+{ Envelope } = require './js/front/envelope'
 
 time = 0
 currentTime = 0

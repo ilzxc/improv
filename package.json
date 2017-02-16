@@ -17,5 +17,12 @@
   "bugs": {
     "url": "https://github.com/ilzxc/improv/issues"
   },
+  "build": {
+    "appId": "com.ilzxc.improv",
+    "mac": {
+      "category": "public.app-category.music"
+    },
+    "files": ["!src${/*}", "*.sh"]
+  },
   "homepage": "https://ilzxc.github.io/improv"
 }
