@@ -42,11 +42,17 @@ Scene1 = () ->
     ### Single-dot scene that pulsates according to the envelope ###
     @minRadius = 10
     @maxRadius = (Math.min width, height) / 2 - @minRadius - 100
-    @draw = (state) ->
+    @fillColor = 255
+    @draw = (state, trigger) ->
+        if trigger == true
+            if Math.random() < 0.09 
+                @fillColor = [255, 200, 200] 
+            else 
+                @fillColor = [255, 255, 255]
         push()
         stroke 200, 200, 200
         strokeWeight 10
-        fill 255, 255, 255
+        fill @fillColor
         radius = @minRadius + (state * @maxRadius)
         ellipse 0, 0, radius, radius
         pop()
@@ -65,31 +71,32 @@ Scene2 = () ->
     ### Two squares, which take turns in growing / shrinking 
         according to the envelope ###
     @radius = [100, 100]
-    @angleIncrement = 2 # degrees per second
+    @angleIncrement = 1 + Math.random() # degrees per second
+    @reverseAngle = 2 + Math.random()
     @dt = new deltaTime()
     @currentSquare = 0 # by default, the first square is selected
     @angle = 0
     @draw = (state, trigger) ->
         if trigger == true 
             @radius[@currentSquare] = 100
-            @currentSquare = (@currentSquare + 1) % 2
+            @currentSquare = Math.floor(Math.random() * 2)
         @radius[@currentSquare] = 100 + (75 * state)
         @angle += @angleIncrement * @dt.get()
         rotate @angle
         push()
-        stroke 200, 200, 200
+        stroke 200
         strokeWeight 10
-        fill 255, 255, 255
+        fill 255
         translate 100, 0
-        rotate -@angle * 2
+        rotate -@angle * @reverseAngle
         rect -@radius[0] / 2, -@radius[0] / 2, @radius[0], @radius[0]
         pop()
         push()
-        stroke 200, 200, 200
+        stroke 0
         strokeWeight 10
-        fill 255, 255, 255
+        fill 55
         translate -100, 0
-        rotate -@angle * 2
+        rotate -@angle * @reverseAngle
         rect -@radius[1] / 2, -@radius[1] / 2, @radius[1], @radius[1]
         pop()
     this
@@ -117,7 +124,7 @@ Particle = () ->
         magnitude = -lenV @position
         @acceleration = [magnitude * @gravity * @position[0],  magnitude * @gravity * @position[1]]
         @velocity = [@velocity[0] + @acceleration[0], @velocity[1] + @acceleration[1]]
-        limitV @velocity, 2
+        limitV @velocity, 3
         @position = [@position[0] + @velocity[0], @position[1] + @velocity[1]]
         push()
         stroke @color
