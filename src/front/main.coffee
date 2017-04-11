@@ -14,18 +14,18 @@ setup = () ->
     panelLeft = new Panel true, new Envelope()
     panelRight = new Panel false, new Envelope()
     panelRight.setBackground [240, 240, 240]
-    panelLeft.setScene new Scene2()
+    panelLeft.setScene new Scene3()
     panelLeft.setEUS (envelope) ->
         if ! envelope.busy
-            # envelope.start Math.random() * 4 + .5, -3 + (Math.random() * 4), if Math.random() > .5 then true else false
-            envelope.start Math.random() * 4 + .5, -3 + (Math.random() * 4), false
+            envelope.start Math.random() * 4 + .5, -3 + (Math.random() * 4), if Math.random() > .5 then true else false
+            # envelope.start Math.random() * 4 + .5, -3 + (Math.random() * 4), false
             return true
         false
-    panelRight.setScene new Scene2()
+    panelRight.setScene new Scene1()
     panelRight.setEUS (envelope) ->
         if ! envelope.busy
-            # envelope.start Math.random() * 4 + .5, -3 + (Math.random() * 4), if Math.random() > .5 then true else false
-            envelope.start Math.random() * 4 + .5, -3 + (Math.random() * 4), false
+            envelope.start Math.random() * 4 + .5, -3 + (Math.random() * 4), if Math.random() > .5 then true else false
+            # envelope.start Math.random() * 4 + .5, -3 + (Math.random() * 4), false
             return true
         false
     return

@@ -108,8 +108,11 @@ lenV = (v) ->
     return Math.sqrt v[0] * v[0] + v[1] * v[1]
 
 limitV = (v, val) ->
+    mag = lenV v
     for i in [0, 1]
-        if v[i] > val then v[i] = val
+        if mag > val 
+            v[i] /= mag
+            v[i] *= val
 
 Particle = () ->
     @color = Math.random() * 200 + 55
@@ -124,7 +127,7 @@ Particle = () ->
         magnitude = -lenV @position
         @acceleration = [magnitude * @gravity * @position[0],  magnitude * @gravity * @position[1]]
         @velocity = [@velocity[0] + @acceleration[0], @velocity[1] + @acceleration[1]]
-        limitV @velocity, 3
+        limitV @velocity, 5
         @position = [@position[0] + @velocity[0], @position[1] + @velocity[1]]
         push()
         stroke @color
