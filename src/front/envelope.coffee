@@ -28,6 +28,6 @@ Envelope = () ->
         if @reverse
             @currentValue = 1.0 - @currentValue
         @currentValue
-    return this
+    this
 
 module.exports = { Envelope }
