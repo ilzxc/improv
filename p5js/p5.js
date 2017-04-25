@@ -13867,7 +13867,7 @@ p5.prototype.noLoop = function() {
  *
  */
 
-p5.prototype.loop = function() {
+p5.prototype.yesLoop = function() {
   this._loop = true;
   this._draw();
 };
