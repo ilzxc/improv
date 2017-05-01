@@ -288,12 +288,13 @@ Particle = (origin, velLimit, color=undefined) ->
     @velocity = [(if vel[0] > .5 then vel[0] * 4 else vel[0] * -4), (if vel[1] > .5 then vel[1] * 4 else vel[1] * -4)]
     @mass = 0.00005 + Math.random() * .0005
     @gravity = 0 # will be controlled by the envelope
-    @draw = (state) ->
-        @gravity = @mass * state
-        magnitude = -lenV [@position[0] - @origin[0], @position[1] - @origin[1]]
-        @acceleration = [magnitude * @gravity * (@position[0] - @origin[0]) ,  magnitude * @gravity * (@position[1] - @origin[1])]
-        @velocity = [@velocity[0] + @acceleration[0], @velocity[1] + @acceleration[1]]
-        limitV @velocity, @velLimit
+    @draw = (state, explode) ->
+        if ! explode
+            @gravity = @mass * state
+            magnitude = -lenV [@position[0] - @origin[0], @position[1] - @origin[1]]
+            @acceleration = [magnitude * @gravity * (@position[0] - @origin[0]) ,  magnitude * @gravity * (@position[1] - @origin[1])]
+            @velocity = [@velocity[0] + @acceleration[0], @velocity[1] + @acceleration[1]]
+            limitV @velocity, @velLimit
         @position = [@position[0] + @velocity[0], @position[1] + @velocity[1]]
         push()
         stroke @color
@@ -314,11 +315,12 @@ Scene3 = (velLimit=20) ->
     @mode = 0
     for i in [0...@numParticles]
         @particles.push new Particle @origin, velLimit
-    @drawSimple = (particles, state) ->
+    @explode = false
+    @drawSimple = (particles, state, trigger, explode) ->
         for p in particles
-            p.draw state
+            p.draw state, explode
         return
-    @drawToRed = (particles, state, trigger) ->
+    @drawToRed = (particles, state, trigger, explode) ->
         if trigger
             idx = Math.floor Math.random() * (particles.length - 1)
             strong = Math.random() * 128 + 128
@@ -326,39 +328,38 @@ Scene3 = (velLimit=20) ->
             color = [strong, weak, weak]
             particles[idx].color = color
         for p in particles
-            p.draw state
+            p.draw state, explode
         return
-    @drawToGrey = (particles, state, trigger) ->
+    @drawToGrey = (particles, state, trigger, explode) ->
         if trigger
             idx = Math.floor Math.random() * (particles.length - 1)
             color = Math.random() * 100 + 155
             particles[idx].color = [color, color, color]
         for p in particles
-            p.draw state
+            p.draw state, explode
         return
-    @drawSimpleJitter = (particles, state, trigger) ->
+    @drawSimpleJitter = (particles, state, trigger, explode) ->
         if trigger
             for p in particles
                 angle = Math.random() * Math.PI * 2
                 p.velocity = [3 * Math.cos(angle), 3 * Math.sin(angle)]
         for p in particles
-            p.draw state
+            p.draw state, explode
         return
-    @drawToFadeOut = (particles, state, trigger) ->
+    @drawToFadeOut = (particles, state, trigger, explode) ->
         if trigger
             if particles.length > 0
                 --particles.length 
         for p in particles
-            p.draw state
+            p.draw state, explode
         return
     @drawFuncs = [@drawSimple, @drawToRed, @drawToGrey, @drawSimpleJitter, @drawToFadeOut]
     @draw = (state, trigger) ->
-        @drawFuncs[@mode] @particles, state, trigger
+        @drawFuncs[@mode] @particles, state, trigger, @explode
         return
     @updateOrigin = (radius) ->
         angle = Math.random() * Math.PI * 2
         @origin = [radius * Math.cos(angle), radius * Math.sin(angle)]
-        console.log @origin
         return
     @setVelLimit = (velLimit) ->
         for p in @particles
@@ -375,6 +376,7 @@ Scene3a = (velLimit=20) ->
     strong = Math.random() * 128 + 128
     weak = Math.random() * 128
     @particles[@particles.length - 1].color = @particles[@particles.length - 1].fill = [strong, weak, weak]
+    @explode = false
     @draw = (state, trigger) ->
         if trigger
             # set the previous high-lit particle to be regular
@@ -396,7 +398,8 @@ Scene3a = (velLimit=20) ->
                 r = if Math.random() < .5 then 0 else 1
                 p.velocity[r] *= 2
         for p in @particles
-            p.draw state
+            p.draw state, @explode 
+        return
     @updateOrigin = (radius) ->
         angle = Math.random() * Math.PI * 2
         @origin = [radius * Math.cos(angle), radius * Math.sin(angle)]
@@ -404,8 +407,6 @@ Scene3a = (velLimit=20) ->
             p.origin = @origin
         return
     this
-
-
 
 Scenes3 = {Scene3, Scene3a}
 
