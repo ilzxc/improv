@@ -242,48 +242,20 @@ Score = (panelLeft, panelRight) ->
             false
         this
 
-    # @Crazy3 = () ->
-    #     # fast dots in Scene1c with random mode switches
-    #     # !!! ASSUMES THAT PANEL LEFT AND PANEL RIGHT SCENES HAVE BEEN SET TO Scenes1.Scene1c() !!!
-    #     @update = (envelope, panelLeft, panelRight) ->
-    #         if envelope.currentValue > 0.3
-    #             if Math.random() < 0.1
-    #                 console.log "updating mode"
-    #                 mode = Math.floor 5 * Math.random()
-    #                 if Math.random() < .5
-    #                     # update left mode
-    #                     console.log "before", panelLeft.scene.dot.mode
-    #                     panelLeft.scene.dot.mode = mode
-    #                     console.log "after", panelLeft.scene.dot.mode
-    #                 else
-    #                     # update right mode
-    #                     console.log "before", panelRight.scene.dot.mode
-    #                     panelRight.scene.dot.mode = mode
-    #                     console.log "after", panelRight.scene.dot.mode
-    #         if ! envelope.busy
-    #             return true
-    #         false
-    #     this
-
-    # @Crazy4 = () ->
-    #     # unison of left & right, with timing that slows down
-    #     @update = (envelope, panelLeft, panelRight) ->
-    #         if ! envelope.busy
-    #             panelLeft.setScene new Scenes3.Scene3 5
-    #             panelRight.setScene new Scenes3.Scene3 5
-    #             panelLeft.setEUS new SimpleEUS .1, .3, 1, 2, false, 0.2
-    #             panelRight.setEUS new SimpleEUS .3, .6, 1, 2, true, 0.4
-    #             envelope.start 13, 1, false, 0
-    #             return true
-    #         false
-    #     this
 
     @ThreesRedux = () ->
         # randomized mode alteration (without fadeout)
         @update = (envelope, panelLeft, panelRight) ->
             if ! envelope.busy
-                envelope.start 20, 1, false, 0
+                envelope.start 40, 1, false, 0
                 return true
+            if Math.random() < 0.01
+                if Math.random() < 0.5
+                    mode = Math.floor 5 * Math.random()
+                    panelLeft.scene.mode = mode
+                if Math.random() < 0.5
+                    mode = Math.floor 5 * Math.random()
+                    panelRight.scene.mode = mode
             false
         this
 
@@ -300,7 +272,7 @@ Score = (panelLeft, panelRight) ->
                 envelope.start 20, 1, false, 0
                 return true
             else if ! @explodeStarted
-                if envelope.currentValue > 0.2
+                if envelope.currentValue > 0.1
                     panelLeft.setEUS null
                     panelRight.setEUS null
                     panelLeft.scene.explode = true
@@ -348,7 +320,7 @@ Score = (panelLeft, panelRight) ->
                 panelRight.setEnvelope null
                 @rightUpdated = true
                 # if @leftUpdated and @rightUpdated
-                envelope.start 20, 1, false, 0
+                envelope.start 10, 1, false, 0
                 return true
             false
         this
